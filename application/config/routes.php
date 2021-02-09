@@ -58,4 +58,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['TEST']['GET'] = 'KareoController/TEST';
 $route['CreateAppointment']['POST'] = 'KareoController/CreateAppointment';
 $route['CreatePatient']['POST'] = 'KareoController/CreatePatient';
+$route['UpdatePatient']['POST'] = 'KareoController/UpdatePatient';
+$route['UpdateAppointment']['POST'] = 'KareoController/UpdateAppointment';
+
 

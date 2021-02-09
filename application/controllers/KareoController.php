@@ -31,27 +31,28 @@ class KareoController extends CI_Controller {
     public function CreateAppointment()
     {
         $this->load->helper('url');
-
-
-        $AppointmentStatus = $this->input->post("AppointmentStatus");
-        $AppointmentType = $this->input->post("AppointmentType");
-        $EndTime = $this->input->post("EndTime");
-        $ForRecare = $this->input->post("ForRecare");
-        $IsDeleted = $this->input->post("IsDeleted");
-        $IsGroupAppointment = $this->input->post("IsGroupAppointment");
-        $IsRecurring = $this->input->post("IsRecurring");
-        $DateOfBirth = $this->input->post("DateOfBirth");
-        $FirstName = $this->input->post("FirstName");
-        $GenderId = $this->input->post("GenderId");
-        $HomePhone = $this->input->post("HomePhone");
-        $LastName  = $this->input->post("LastName ");
-        $MobilePhone = $this->input->post("MobilePhone");
-        $PatientId = $this->input->post("PatientId");
-        $PracticeId = $this->input->post("PracticeId");
-        $ProviderId = $this->input->post("ProviderId");
-        $ServiceLocationId = $this->input->post("ServiceLocationId");
-        $StartTime  = $this->input->post("StartTime ");
-        $WasCreatedOnline = $this->input->post("WasCreatedOnline");
+        
+        $AppointmentName=$this->input->post("AppointmentName");
+        $AppointmentStatus=$this->input->post("AppointmentStatus");
+        $AppointmentType=$this->input->post("AppointmentType");
+        $EndTime=$this->input->post("EndTime");
+        $ForRecare=$this->input->post("ForRecare");
+        $IsDeleted=$this->input->post("IsDeleted");
+        $IsGroupAppointment=$this->input->post("IsGroupAppointment");
+        $IsRecurring=$this->input->post("IsRecurring");
+        $MaxAttendees=$this->input->post("MaxAttendees");
+        $DateOfBirth=$this->input->post("DateOfBirth");
+        $FirstName=$this->input->post("FirstName");
+        $GenderId=$this->input->post("GenderId");
+        $HomePhone=$this->input->post("HomePhone");
+        $LastName=$this->input->post("LastName");
+        $MobilePhone=$this->input->post("MobilePhone");
+        $PatientId=$this->input->post("PatientId");
+        $PracticeId=$this->input->post("PracticeId");
+        $ProviderId=$this->input->post("ProviderId");
+        $ServiceLocationId=$this->input->post("ServiceLocationId");
+        $StartTime=$this->input->post("StartTime");
+        $WasCreatedOnline=$this->input->post("WasCreatedOnline");
 		
 
         try{
@@ -78,7 +79,7 @@ class KareoController extends CI_Controller {
     // $ProviderId = '42';
     // $ServiceLocationId = '3';
     // $StartTime = '2021-01-28T17:00:00.000Z';
-    // $WasCreatedOnline = true;
+    // $WasCreatedOnline = true;/
 
     $PatientSummary = ['DateOfBirth' => $DateOfBirth, 'FirstName' => $FirstName, 'GenderId' => $GenderId, 'HomePhone' => $HomePhone, 'LastName' => $LastName, 'MobilePhone' => $MobilePhone, 'PatientId' => $PatientId];
     
@@ -87,19 +88,22 @@ class KareoController extends CI_Controller {
     
     $request = array (
         'RequestHeader' => ['User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey],
-        'Appointment' => ['AppointmentStatus' => $AppointmentStatus, 'AppointmentType' => $AppointmentType, 'EndTime' => $EndTime, 'ForRecare' => $ForRecare, 'IsDeleted' => $IsDeleted, 'IsGroupAppointment' => $IsGroupAppointment, 'IsRecurring' => $IsRecurring, 'PatientSummary' => $PatientSummary, 'PracticeId' => $PracticeId, 'ProviderId' => $ProviderId, 'ServiceLocationId' => $ServiceLocationId, 'StartTime' => $StartTime, 'WasCreatedOnline' => $WasCreatedOnline,],
+        'Appointment' => ['AppointmentName'=>$AppointmentName, 'AppointmentStatus' => $AppointmentStatus, 'AppointmentType' => $AppointmentType, 'EndTime' => $EndTime, 'ForRecare' => $ForRecare, 'IsDeleted' => $IsDeleted, 'IsGroupAppointment' => $IsGroupAppointment, 'IsRecurring' => $IsRecurring, 'MaxAttendees'=>$MaxAttendees,'PatientSummary' => $PatientSummary, 'PracticeId' => $PracticeId, 'ProviderId' => $ProviderId, 'ServiceLocationId' => $ServiceLocationId, 'StartTime' => $StartTime, 'WasCreatedOnline' => $WasCreatedOnline,],
     );
     // echo json_encode($request) . '<br />';
-
+    // echo '<br />';
 
     $params = array('request' => $request);
     $response = $client->CreateAppointment($params)->CreateAppointmentResult;
 
-    print_r ($response);
+    // print_r($response);
+    $AppointmentData =json_encode($response);
 
-    echo '<br />';
+    echo $AppointmentData;
+    // print_r ($AppointmentData);
+    return $AppointmentData;
 
-    echo json_encode($response) . '<br />';
+    // echo json_encode($response) . '<br />';
 
     // foreach($response->Patients->PatientData as &$value)
     // {
@@ -108,7 +112,6 @@ class KareoController extends CI_Controller {
 } catch (Exception $err) {
     print "Error: ". $err->getMessage();
 }
-return $response;
 
 
     }
@@ -167,7 +170,7 @@ public function CreatePatient()
     
     
         $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
-        $client = new SoapClient($wsdl);
+    $client = new SoapClient($wsdl);
     
         // 'Authorizations'=>[
         //     'InsurancePolicyAuthorizationCreateReq'=>[
@@ -202,7 +205,7 @@ public function CreatePatient()
     
         echo $PatientData;
         print_r ($PatientData);
-    
+        return $PatientData;
         // foreach($response->Patients->PatientData as &$value)
         // {
         //     print($value->PatientFullName. '<br />');
@@ -296,7 +299,11 @@ public function UpdatePatient()
         $response = $client->UpdatePatient($params)->UpdatePatientResult;
 
         print_r ($response);
-
+        $PatientData =json_encode($response);
+    
+        echo $PatientData;
+        print_r ($PatientData);
+        return $PatientData;
         // foreach($response->Patients->PatientData as &$value)
         // {
         //     print($value->PatientFullName. '<br />');
@@ -311,7 +318,7 @@ public function UpdateAppointment()
 {
 
     $this->load->helper('url');
-
+    $AppointmentName=$this->input->post("AppointmentName");
     $AppointmentId=$this->input->post("AppointmentId");
     $AppointmentReasonId=$this->input->post("AppointmentReasonId"); 
     $AppointmentStatus =$this->input->post("AppointmentStatus");
@@ -344,7 +351,7 @@ public function UpdateAppointment()
         
         $request = array (
             'RequestHeader' => ['User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey],
-            'Appointment' => ['AppointmentId'=>$AppointmentId, 'AppointmentReasonId'=>$AppointmentReasonId,'AppointmentStatus' => $AppointmentStatus, 'EndTime' => $EndTime,'IsGroupAppointment' => $IsGroupAppointment, 'IsRecurring' => $IsRecurring, 'PatientId'=>$PatientId, 'ProviderId' => $ProviderId, 'ResourceId'=>$ResourceId,'ServiceLocationId' => $ServiceLocationId, 'StartTime' => $StartTime, 'UpdatedBy'=>$UpdatedBy],
+            'Appointment' => ['AppointmentName'=>$AppointmentName,'AppointmentId'=>$AppointmentId, 'AppointmentReasonId'=>$AppointmentReasonId,'AppointmentStatus' => $AppointmentStatus, 'EndTime' => $EndTime,'IsGroupAppointment' => $IsGroupAppointment, 'IsRecurring' => $IsRecurring, 'MaxAttendees'=>$MaxAttendees,'PatientId'=>$PatientId, 'ProviderId' => $ProviderId, 'ResourceId'=>$ResourceId,'ServiceLocationId' => $ServiceLocationId, 'StartTime' => $StartTime, 'UpdatedBy'=>$UpdatedBy],
         );
         // echo json_encode($request) . '<br />';
     
@@ -356,7 +363,7 @@ public function UpdateAppointment()
     
         echo '<br />';
         $UpAppointmentData =json_encode($response);
-    
+        return $UpAppointmentData;
         // foreach($response->Patients->PatientData as &$value)
         // {
         //     print($value->PatientFullName. '<br />');
