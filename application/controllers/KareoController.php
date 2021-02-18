@@ -56,9 +56,10 @@ class KareoController extends CI_Controller {
 		
 
         try{
-    $user = 'antonio@marksgroup.net';
-    $password = 'PLKu4Wf*';
-    $customerKey = 'g74nf36tq59z';
+            $user = $this->input->post("user");
+            $password = $this->input->post("password");
+            $customerKey = $this->input->post("customerKey");
+            $zohoToken = $this->input->get("zohoToken");
     //----------------------------------------
     
     // $AppointmentStatus = 'Scheduled';
@@ -164,9 +165,10 @@ public function CreatePatient()
     $PracticeName=$this->input->post("PracticeName");
 
     try{
-        $user = 'antonio@marksgroup.net';
-        $password = 'PLKu4Wf*';
-        $customerKey = 'g74nf36tq59z';
+        $user = $this->input->post("user");
+        $password = $this->input->post("password");
+        $customerKey = $this->input->post("customerKey");
+        $zohoToken = $this->input->get("zohoToken");
     
     
         $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
@@ -200,11 +202,12 @@ public function CreatePatient()
         $params = array('request' => $request);
         $response = $client->CreatePatient($params)->CreatePatientResult;
     
-        print_r($response);
+        // print_r($response);
+        //  echo '<br />';
         $PatientData =json_encode($response);
     
         echo $PatientData;
-        print_r ($PatientData);
+        // print_r ($PatientData);
         return $PatientData;
         // foreach($response->Patients->PatientData as &$value)
         // {
@@ -213,29 +216,6 @@ public function CreatePatient()
     } catch (Exception $err) {
         print "Error: ". $err->getMessage();
     }
-    //$jsson_convert = json_decode($jsson);
-    //$output = $jsson_convert->output;
-
-    //$dataMap = json_decode($output);
-    
-    /*$curl = curl_init();
-
-    curl_setopt($curl , CURLOPT_URL , 'https://www.zohoapis.com/crm/v2/functions/createpatients/actions/execute?auth_type=apikey&zapikey=1003.bd8bfa9be391059bc021faf645da2de5.35e6095fb73458fc45f37cba022b1791');
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-    $ress = curl_exec($curl);
-
-    echo $ress;
-    $jsonn=json_decode($ress);
-    $details=$this->input->post("tails;
-    $output=$details->output;
-
-    echo $ress . '<br/><br/>';
-
-    $dataMap=json_decode($jsonn);
-
-    print_r($output. '<br/><br/>');*/
-    //return $AddressLine1;
 }
 public function UpdatePatient()
 {
@@ -261,27 +241,17 @@ public function UpdatePatient()
     $PracticeName = $this->input->post("PracticeName");
     
     try{
-        $user = 'antonio@marksgroup.net';
-        $password = 'PLKu4Wf*';
-        $customerKey = 'g74nf36tq59z';
+        $user = $this->input->post("user");
+        $password = $this->input->post("password");
+        $customerKey = $this->input->post("customerKey");
+        $zohoToken = $this->input->get("zohoToken");
         //-------------------------------------
 
 
         $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
         $client = new SoapClient($wsdl);
 
-        // 'Authorizations'=>[
-        //     'InsurancePolicyAuthorizationCreateReq'=>[
-        //         'ContactFullName'=>$ContactFullName, 'ContactPhone'=>$ContactPhone,'InsurancePlanName'=>$InsurancePlanName,'Number'=>$Number,'NumberOfVisits'=>$NumberOfVisits ]],
-        // $Cases=array(
-        //     'PatientCaseCreateReq'=>[
-        //     'Policies'=>[
-        //         'InsurancePolicyCreateReq'=>[
-        //             'Copay'=>$Copay,'Deductible'=>$Deductible, 
-        //             'Insured'=>[
-        //                 'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
-        //             'PlanName'=>$PlanName, 'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]]]
-        // );
+       
         $Practice=array(
             'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
         );
@@ -298,11 +268,12 @@ public function UpdatePatient()
         $params = array('UpdatePatientReq' => $UpdatePatientReq);
         $response = $client->UpdatePatient($params)->UpdatePatientResult;
 
-        print_r ($response);
+        // print_r ($response);
+        // echo '<br />';
         $PatientData =json_encode($response);
     
         echo $PatientData;
-        print_r ($PatientData);
+        // print_r ($PatientData);
         return $PatientData;
         // foreach($response->Patients->PatientData as &$value)
         // {
@@ -335,9 +306,10 @@ public function UpdateAppointment()
     $StartTime =$this->input->post("StartTime");
 
     try{
-        $user = 'antonio@marksgroup.net';
-        $password = 'PLKu4Wf*';
-        $customerKey = 'g74nf36tq59z';
+        $user = $this->input->post("user");
+        $password = $this->input->post("password");
+        $customerKey = $this->input->post("customerKey");
+        $zohoToken = $this->input->get("zohoToken");
     
     
        
@@ -359,10 +331,11 @@ public function UpdateAppointment()
         $params = array('request' => $request);
         $response = $client->UpdateAppointment($params)->UpdateAppointmentResult;
     
-        print_r ($response);
+        // print_r ($response);
     
-        echo '<br />';
+        // echo '<br />';
         $UpAppointmentData =json_encode($response);
+        echo $UpAppointmentData;
         return $UpAppointmentData;
         // foreach($response->Patients->PatientData as &$value)
         // {
@@ -374,7 +347,87 @@ public function UpdateAppointment()
 
 
 }
+    public function GetPatients() {
 
+
+        try{
+            $user = $this->input->get("user");
+            $password = $this->input->get("password");
+            $customerKey = $this->input->get("customerKey");
+            $zohoToken = $this->input->get("zohoToken");
+
+            $PracticeName= $this->input->get("PracticeName");
+            $PracticeId= $this->input->get("PracticeId");
+            $FromLastModifiedDate= $this->input->get("FromLastModifiedDate");
+            $ToLastModifiedDate= $this->input->get("ToLastModifiedDate");
+        
+            if($zohoToken=="BT7DD*CqYpYQ"){
+                $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
+                $client = new SoapClient($wsdl);
+                
+                $request = array (
+                    'RequestHeader' => array('User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey),
+                    'Filter' => array('PracticeName'=>$PracticeName, 'PracticeId'=>$PracticeId,'FromLastModifiedDate'=>$FromLastModifiedDate, 'ToLastModifiedDate'=>$ToLastModifiedDate)
+                );
+                //'FromLastModifiedDate'=>'02/12/2021', 'ToLastModifiedDate'=>'02/13/2021'
+                $params = array('request' => $request);
+                $response = $client->GetPatients($params)->GetPatientsResult;
+                // print_r ($request);
+                $PatientsInfo=json_encode($response);
+                // print_r ($customerKey);
+                print_r ($PatientsInfo);
+                return $PatientsInfo;
+                // foreach($response->Patients->PatientData as &$value)
+                // {
+                //     print($value->PatientFullName. '<br />');
+                // }
+            }
+            
+        } catch (Exception $err) {
+            print "Error: ". $err->getMessage();
+        }
+    }
+    public function GetAppointments() {
+
+
+        try{
+            $user = $this->input->get("user");
+            $password = $this->input->get("password");
+            $customerKey = $this->input->get("customerKey");
+            $zohoToken = $this->input->get("zohoToken");
+
+            $PracticeName= $this->input->get("PracticeName");
+            $PracticeId= $this->input->get("PracticeId");
+            $FromCreatedDate= $this->input->get("FromCreatedDate");
+            $FromLastModifiedDate= $this->input->get("FromLastModifiedDate");
+            $ToLastModifiedDate= $this->input->get("ToLastModifiedDate");
+        
+            if($zohoToken=="BT7DD*CqYpYQ"){
+                $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
+                $client = new SoapClient($wsdl);
+                
+                $request = array (
+                    'RequestHeader' => array('User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey),
+                    'Filter' => array('PracticeName'=>$PracticeName, 'PracticeId'=>$PracticeId,'FromCreatedDate'=>$FromCreatedDate,'FromLastModifiedDate'=>$FromLastModifiedDate, 'ToLastModifiedDate'=>$ToLastModifiedDate)
+                );
+                //'FromLastModifiedDate'=>'02/12/2021', 'ToLastModifiedDate'=>'02/13/2021'
+                $params = array('request' => $request);
+                $response = $client->GetAppointments($params)->GetAppointmentsResult;
+                // print_r ($request);
+                $PatientsInfo=json_encode($response);
+                // print_r ($customerKey);
+                print_r ($PatientsInfo);
+                return $PatientsInfo;
+                // foreach($response->Patients->PatientData as &$value)
+                // {
+                //     print($value->PatientFullName. '<br />');
+                // }
+            }
+            
+        } catch (Exception $err) {
+            print "Error: ". $err->getMessage();
+        }
+    }
 
 
 	public function TEST() {
@@ -426,106 +479,7 @@ public function UpdateAppointment()
     $params = array('UpdatePatientReq' => $UpdatePatientReq);
     echo json_encode($params);
     return $params;
-        /*$curl = curl_init();
-
-        curl_setopt($curl , CURLOPT_URL , 'https://www.zohoapis.com/crm/v2/functions/createpatients/actions/execute?auth_type=apikey&zapikey=1003.bd8bfa9be391059bc021faf645da2de5.35e6095fb73458fc45f37cba022b1791');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        
-        $ress = curl_exec($curl);
-        
-        $jsonn=json_decode($ress);
-        $details=$jsonn->details;
-        $output=$details->output;
-        
-        echo $ress . '<br/><br/>';
-        
-        $dataMap=json_decode($output);
-        
-        print_r($output. '<br/><br/>');
-        
-        
-        try{
-            $user = 'antonio@marksgroup.net';
-            $password = 'PLKu4Wf*';
-            $customerKey = 'g74nf36tq59z';
-        
-            $AddressLine1=$dataMap->AddressLine1;
-            $AddressLine2=$dataMap->AddressLine2;
-            $City=$dataMap->City;
-            $Country=$dataMap->Country;
-            $DateofBirth=$dataMap->DateofBirth;
-            $EmailAddress=$dataMap->EmailAddress;
-            $FirstName=$dataMap->FirstName;
-            $Gender=$dataMap->Gender;
-            $HomePhone=$dataMap->HomePhone;
-            $LastName=$dataMap->LastName;
-            $MobilePhone=$dataMap->MobilePhone;
-            $State=$dataMap->State;
-            $WorkPhone=$dataMap->WorkPhone;
-            $ZipCode=$dataMap->ZipCode;
-            $ContactFullName=$dataMap->ContactFullName;
-            $ContactPhone=$dataMap->ContactPhone;
-            $InsurancePlanName=$dataMap->InsurancePlanName;
-            $Number=$dataMap->Number;
-            $NumberOfVisits=$dataMap->NumberOfVisits;
-            $Copay=$dataMap->Copay;
-            $Deductible=$dataMap->Deductible;
-            $InsuredDateofBirth=$dataMap->InsuredDateofBirth;
-            $InsuredFirstName=$dataMap->InsuredFirstName;
-            $InsuredLastName=$dataMap->InsuredLastName;
-            $InsuredMiddleName=$dataMap->InsuredMiddleName;
-            $PlanName=$dataMap->PlanName;
-            $PolicyGroupNumber=$dataMap->PolicyGroupNumber;
-            $PolicyNotes=$dataMap->PolicyNotes;
-            $PolicyNumber=$dataMap->PolicyNumber;
-            $PracticeID=$dataMap->PracticeID;
-            $PracticeName=$dataMap->PracticeName;
-        
-        
-            $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
-            $client = new SoapClient($wsdl);
-        
-            // 'Authorizations'=>[
-            //     'InsurancePolicyAuthorizationCreateReq'=>[
-            //         'ContactFullName'=>$ContactFullName, 'ContactPhone'=>$ContactPhone,'InsurancePlanName'=>$InsurancePlanName,'Number'=>$Number,'NumberOfVisits'=>$NumberOfVisits ]],
-            $Cases=array(
-                'PatientCaseCreateReq'=>[
-                'Policies'=>[
-                    'InsurancePolicyCreateReq'=>[
-                        'Copay'=>$Copay,'Deductible'=>$Deductible, 
-                        'Insured'=>[
-                            'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
-                        'PlanName'=>$PlanName, 'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]]]
-            );
-            $Practice=array(
-                'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
-            );
-        
-        
-            $request = array (
-                'RequestHeader' => [
-                    'User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey],
-                'Patient'=>[
-                    'AddressLine1'=>$AddressLine1, 'AddressLine2'=>$AddressLine2, 'Cases'=>$Cases, 'City'=>$City, 'Country'=>$Country, 'DateofBirth'=>$DateofBirth, 'EmailAddress'=>$EmailAddress, 'FirstName'=>$FirstName, 'Gender'=>$Gender, 'HomePhone'=>$HomePhone, 'LastName'=>$LastName, 'MobilePhone'=>$MobilePhone, 'Practice'=>$Practice, 'State'=>$State, 'WorkPhone'=>$WorkPhone, 'ZipCode'=>$ZipCode]
-            );
-            // echo json_encode($request);
-        
-            $params = array('request' => $request);
-            $response = $client->CreatePatient($params)->CreatePatientResult;
-        
-            print_r($response);
-            $PatientData =json_encode($response);
-        
-            print_r ($PatientData);
-        
-            // foreach($response->Patients->PatientData as &$value)
-            // {
-            //     print($value->PatientFullName. '<br />');
-            // }
-        } catch (Exception $err) {
-            print "Error: ". $err->getMessage();
-        }*/
-        
+       
         
 	}
 
