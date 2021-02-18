@@ -408,7 +408,8 @@ public function UpdateAppointment()
                 
                 $request = array (
                     'RequestHeader' => array('User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey),
-                    'Filter' => array('PracticeName'=>$PracticeName, 'PracticeId'=>$PracticeId,'FromCreatedDate'=>$FromCreatedDate,'FromLastModifiedDate'=>$FromLastModifiedDate, 'ToLastModifiedDate'=>$ToLastModifiedDate)
+                    'Filter' => array('PracticeName'=>$PracticeName, 'PracticeId'=>$PracticeId,'FromCreatedDate'=>$FromCreatedDate,'FromLastModifiedDate'=>$FromLastModifiedDate, 'ToLastModifiedDate'=>$ToLastModifiedDate),
+                    'Fields'=> array('PatientFullName'=>'true','ConfirmationStatus'=> 'true', 'CreatedDate'=> 'true','ID'=> 'true','PatientID'=> 'true','ResourceName1'=>'true','StartDate'=>'true') 
                 );
                 //'FromLastModifiedDate'=>'02/12/2021', 'ToLastModifiedDate'=>'02/13/2021'
                 $params = array('request' => $request);
@@ -418,10 +419,6 @@ public function UpdateAppointment()
                 // print_r ($customerKey);
                 print_r ($PatientsInfo);
                 return $PatientsInfo;
-                // foreach($response->Patients->PatientData as &$value)
-                // {
-                //     print($value->PatientFullName. '<br />');
-                // }
             }
             
         } catch (Exception $err) {
