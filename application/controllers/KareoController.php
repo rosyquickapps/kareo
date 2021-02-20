@@ -415,10 +415,13 @@ public function UpdateAppointment()
                 $params = array('request' => $request);
                 $response = $client->GetAppointments($params)->GetAppointmentsResult;
                 // print_r ($request);
-                $PatientsInfo=json_encode($response);
+                $AppointmentsInfo=json_encode($response);
+                
+                     print_r ($AppointmentsInfo);
+                return $AppointmentsInfo;
+             
                 // print_r ($customerKey);
-                print_r ($PatientsInfo);
-                return $PatientsInfo;
+               
             }
             
         } catch (Exception $err) {
