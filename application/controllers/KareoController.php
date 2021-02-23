@@ -157,6 +157,7 @@ public function CreatePatient()
     $InsuredFirstName=$this->input->post("InsuredFirstName");
     $InsuredLastName=$this->input->post("InsuredLastName");
     $InsuredMiddleName=$this->input->post("InsuredMiddleName");
+    $CaseName=$this->input->post("CaseName");
     $PlanName=$this->input->post("PlanName");
     $PolicyGroupNumber=$this->input->post("PolicyGroupNumber");
     $PolicyNotes=$this->input->post("PolicyNotes");
@@ -184,7 +185,7 @@ public function CreatePatient()
                     'Copay'=>$Copay,'Deductible'=>$Deductible, 
                     'Insured'=>[
                         'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
-                    'PlanName'=>$PlanName, 'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]]]
+                        'PlanName'=>$PlanName,'CaseName'=>$CaseName, 'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]]]
         );
         $Practice=array(
             'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
@@ -237,6 +238,16 @@ public function UpdatePatient()
     $State = $this->input->post("State");
     $WorkPhone = $this->input->post("WorkPhone");
     $ZipCode = $this->input->post("ZipCode");
+    $Copay=$this->input->post("Copay");
+    $Deductible=$this->input->post("Deductible");
+    $InsuredDateofBirth=$this->input->post("InsuredDateofBirth");
+    $InsuredFirstName=$this->input->post("InsuredFirstName");
+    $InsuredLastName=$this->input->post("InsuredLastName");
+    $InsuredMiddleName=$this->input->post("InsuredMiddleName");
+    $PlanName=$this->input->post("PlanName");
+    $PolicyGroupNumber=$this->input->post("PolicyGroupNumber");
+    $PolicyNotes=$this->input->post("PolicyNotes");
+    $PolicyNumber=$this->input->post("PolicyNumber");
     $PracticeID = $this->input->post("PracticeID");
     $PracticeName = $this->input->post("PracticeName");
     
@@ -250,7 +261,15 @@ public function UpdatePatient()
 
         $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
         $client = new SoapClient($wsdl);
-
+        $Cases=array(
+            'PatientCaseCreateReq'=>[
+            'Policies'=>[
+                'InsurancePolicyCreateReq'=>[
+                    'Copay'=>$Copay,'Deductible'=>$Deductible, 
+                    'Insured'=>[
+                        'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
+                    'PlanName'=>$PlanName, 'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]]]
+        );
        
         $Practice=array(
             'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
@@ -261,7 +280,7 @@ public function UpdatePatient()
             'RequestHeader' => [
                 'User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey],
             'Patient'=>[
-                'AddressLine1'=>$AddressLine1, 'AddressLine2'=>$AddressLine2, 'City'=>$City, 'Country'=>$Country, 'DateofBirth'=>$DateofBirth, 'EmailAddress'=>$EmailAddress, 'FirstName'=>$FirstName, 'Gender'=>$Gender, 'HomePhone'=>$HomePhone, 'LastName'=>$LastName, 'MobilePhone'=>$MobilePhone,'PatientID'=>$PatientID, 'Practice'=>$Practice, 'State'=>$State, 'WorkPhone'=>$WorkPhone, 'ZipCode'=>$ZipCode]
+                'AddressLine1'=>$AddressLine1, 'AddressLine2'=>$AddressLine2, 'Cases'=>$Cases,'City'=>$City, 'Country'=>$Country, 'DateofBirth'=>$DateofBirth, 'EmailAddress'=>$EmailAddress, 'FirstName'=>$FirstName, 'Gender'=>$Gender, 'HomePhone'=>$HomePhone, 'LastName'=>$LastName, 'MobilePhone'=>$MobilePhone,'PatientID'=>$PatientID, 'Practice'=>$Practice, 'State'=>$State, 'WorkPhone'=>$WorkPhone, 'ZipCode'=>$ZipCode]
         );
         // echo json_encode($UpdatePatientReq);
 
@@ -433,10 +452,8 @@ public function UpdateAppointment()
 	public function TEST() {
 
 		$this->load->helper('url');
-
 		$this->load->library('session');
 		//$this->session->set_userdata('sesion', 1);
-		
 
 		//$this->load->database('default');
 		//$this->load->model('strabajador');
@@ -460,9 +477,10 @@ public function UpdateAppointment()
         $ZipCode=19148;
         $PracticeID=3;
         $PracticeName="Sandbox";
-        $user = 'antonio@marksgroup.net';
+    $user = 'antonio@marksgroup.net';
     $password = 'PLKu4Wf*';
     $customerKey = 'g74nf36tq59z';
+    
     $Practice=array(
         'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
     );
