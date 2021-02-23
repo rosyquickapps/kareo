@@ -174,10 +174,7 @@ public function CreatePatient()
     
         $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
     $client = new SoapClient($wsdl);
-    
-        // 'Authorizations'=>[
-        //     'InsurancePolicyAuthorizationCreateReq'=>[
-        //         'ContactFullName'=>$ContactFullName, 'ContactPhone'=>$ContactPhone,'InsurancePlanName'=>$InsurancePlanName,'Number'=>$Number,'NumberOfVisits'=>$NumberOfVisits ]],
+
         $Cases=array(
             'PatientCaseCreateReq'=>[
             'Policies'=>[
@@ -185,7 +182,7 @@ public function CreatePatient()
                     'Copay'=>$Copay,'Deductible'=>$Deductible, 
                     'Insured'=>[
                         'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
-                        'PlanName'=>$PlanName,'CaseName'=>$CaseName, 'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]]]
+                    'PlanName'=>$PlanName,'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]], 'CaseName'=>$CaseName]
         );
         $Practice=array(
             'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
@@ -230,26 +227,31 @@ public function UpdatePatient()
     $DateofBirth = $this->input->post("DateofBirth");
     $EmailAddress = $this->input->post("EmailAddress");
     $FirstName = $this->input->post("FirstName");
-    $Gender = $this->input->post("Gender");
-    $HomePhone = $this->input->post("HomePhone");
-    $LastName = $this->input->post("LastName");
-    $MobilePhone = $this->input->post("MobilePhone");
-    $PatientID = $this->input->post("PatientID");
-    $State = $this->input->post("State");
-    $WorkPhone = $this->input->post("WorkPhone");
-    $ZipCode = $this->input->post("ZipCode");
+    $Gender=$this->input->post("Gender");
+    $HomePhone=$this->input->post("HomePhone");
+    $LastName=$this->input->post("LastName");
+    $MobilePhone=$this->input->post("MobilePhone");
+    $State=$this->input->post("State");
+    $WorkPhone=$this->input->post("WorkPhone");
+    $ZipCode=$this->input->post("ZipCode");
+    $ContactFullName=$this->input->post("ContactFullName");
+    $ContactPhone=$this->input->post("ContactPhone");
+    $InsurancePlanName=$this->input->post("InsurancePlanName");
+    $Number=$this->input->post("Number");
+    $NumberOfVisits=$this->input->post("NumberOfVisits");
     $Copay=$this->input->post("Copay");
     $Deductible=$this->input->post("Deductible");
     $InsuredDateofBirth=$this->input->post("InsuredDateofBirth");
     $InsuredFirstName=$this->input->post("InsuredFirstName");
     $InsuredLastName=$this->input->post("InsuredLastName");
     $InsuredMiddleName=$this->input->post("InsuredMiddleName");
+    $CaseName=$this->input->post("CaseName");
     $PlanName=$this->input->post("PlanName");
     $PolicyGroupNumber=$this->input->post("PolicyGroupNumber");
     $PolicyNotes=$this->input->post("PolicyNotes");
     $PolicyNumber=$this->input->post("PolicyNumber");
-    $PracticeID = $this->input->post("PracticeID");
-    $PracticeName = $this->input->post("PracticeName");
+    $PracticeID=$this->input->post("PracticeID");
+    $PracticeName=$this->input->post("PracticeName");
     
     try{
         $user = $this->input->post("user");
@@ -261,14 +263,15 @@ public function UpdatePatient()
 
         $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
         $client = new SoapClient($wsdl);
+
         $Cases=array(
-            'PatientCaseCreateReq'=>[
-            'Policies'=>[
-                'InsurancePolicyCreateReq'=>[
-                    'Copay'=>$Copay,'Deductible'=>$Deductible, 
-                    'Insured'=>[
-                        'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
-                    'PlanName'=>$PlanName, 'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]]]
+            'PatientCaseUpdateReq'=>[
+                'Policies'=>[
+                    'InsurancePolicyUpdateReq'=>[
+                        'Copay'=>$Copay,'Deductible'=>$Deductible, 
+                        'Insured'=>[
+                            'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
+                        'PlanName'=>$PlanName,'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]], 'CaseName'=>$CaseName]
         );
        
         $Practice=array(
@@ -280,7 +283,7 @@ public function UpdatePatient()
             'RequestHeader' => [
                 'User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey],
             'Patient'=>[
-                'AddressLine1'=>$AddressLine1, 'AddressLine2'=>$AddressLine2, 'Cases'=>$Cases,'City'=>$City, 'Country'=>$Country, 'DateofBirth'=>$DateofBirth, 'EmailAddress'=>$EmailAddress, 'FirstName'=>$FirstName, 'Gender'=>$Gender, 'HomePhone'=>$HomePhone, 'LastName'=>$LastName, 'MobilePhone'=>$MobilePhone,'PatientID'=>$PatientID, 'Practice'=>$Practice, 'State'=>$State, 'WorkPhone'=>$WorkPhone, 'ZipCode'=>$ZipCode]
+                'AddressLine1'=>$AddressLine1, 'AddressLine2'=>$AddressLine2, 'Cases'=>$Cases, 'City'=>$City, 'Country'=>$Country, 'DateofBirth'=>$DateofBirth, 'EmailAddress'=>$EmailAddress, 'FirstName'=>$FirstName, 'Gender'=>$Gender, 'HomePhone'=>$HomePhone, 'LastName'=>$LastName, 'MobilePhone'=>$MobilePhone, 'Practice'=>$Practice, 'State'=>$State, 'WorkPhone'=>$WorkPhone, 'ZipCode'=>$ZipCode]
         );
         // echo json_encode($UpdatePatientReq);
 
