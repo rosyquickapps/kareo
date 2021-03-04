@@ -153,6 +153,7 @@ public function CreatePatient()
     $NumberOfVisits=$this->input->post("NumberOfVisits");
     $Copay=$this->input->post("Copay");
     $Deductible=$this->input->post("Deductible");
+    $PatientRelationshipToInsured=$this->input->post("PatientRelationshipToInsured");
     $InsuredDateofBirth=$this->input->post("InsuredDateofBirth");
     $InsuredFirstName=$this->input->post("InsuredFirstName");
     $InsuredLastName=$this->input->post("InsuredLastName");
@@ -164,6 +165,7 @@ public function CreatePatient()
     $PolicyNumber=$this->input->post("PolicyNumber");
     $PracticeID=$this->input->post("PracticeID");
     $PracticeName=$this->input->post("PracticeName");
+    $PayerScenario=$this->input->post("PaymentMethod");
 
     try{
         $user = $this->input->post("user");
@@ -181,8 +183,8 @@ public function CreatePatient()
                 'InsurancePolicyCreateReq'=>[
                     'Copay'=>$Copay,'Deductible'=>$Deductible, 
                     'Insured'=>[
-                        'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
-                    'PlanName'=>$PlanName,'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]], 'CaseName'=>$CaseName]
+                        'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName,'PatientRelationshipToInsured'=>$PatientRelationshipToInsured], 
+                    'PlanName'=>$PlanName,'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]], 'CaseName'=>$CaseName, 'PayerScenario'=>$PayerScenario]
         );
         $Practice=array(
             'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
@@ -234,6 +236,7 @@ public function UpdatePatient()
     $State=$this->input->post("State");
     $WorkPhone=$this->input->post("WorkPhone");
     $ZipCode=$this->input->post("ZipCode");
+    $PatientID=$this->input->post("PatientID");
     $ContactFullName=$this->input->post("ContactFullName");
     $ContactPhone=$this->input->post("ContactPhone");
     $InsurancePlanName=$this->input->post("InsurancePlanName");
@@ -242,6 +245,7 @@ public function UpdatePatient()
     $Copay=$this->input->post("Copay");
     $Deductible=$this->input->post("Deductible");
     $InsuredDateofBirth=$this->input->post("InsuredDateofBirth");
+    $PatientRelationshipToInsured=$this->input->post("PatientRelationshipToInsured");
     $InsuredFirstName=$this->input->post("InsuredFirstName");
     $InsuredLastName=$this->input->post("InsuredLastName");
     $InsuredMiddleName=$this->input->post("InsuredMiddleName");
@@ -252,6 +256,7 @@ public function UpdatePatient()
     $PolicyNumber=$this->input->post("PolicyNumber");
     $PracticeID=$this->input->post("PracticeID");
     $PracticeName=$this->input->post("PracticeName");
+    $PayerScenario=$this->input->post("PaymentMethod");
     
     try{
         $user = $this->input->post("user");
@@ -264,15 +269,15 @@ public function UpdatePatient()
         $wsdl = 'https://webservice.kareo.com/services/soap/2.1/KareoServices.svc?singleWsdl';
         $client = new SoapClient($wsdl);
 
-        $Cases=array(
-            'PatientCaseUpdateReq'=>[
-                'Policies'=>[
-                    'InsurancePolicyUpdateReq'=>[
-                        'Copay'=>$Copay,'Deductible'=>$Deductible, 
-                        'Insured'=>[
-                            'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName], 
-                        'PlanName'=>$PlanName,'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]], 'CaseName'=>$CaseName]
-        );
+        // $Cases=array(
+        //     'PatientCaseUpdateReq'=>[
+        //         'Policies'=>[
+        //             'InsurancePolicyUpdateReq'=>[
+        //                 'Copay'=>$Copay,'Deductible'=>$Deductible, 
+        //                 'Insured'=>[
+        //                     'DateofBirth'=>$InsuredDateofBirth, 'FirstName'=>$InsuredFirstName, 'LastName'=>$InsuredLastName, 'MiddleName'=>$InsuredMiddleName,'PatientRelationshipToInsured'=>$PatientRelationshipToInsured], 
+        //                 'PlanName'=>$PlanName,'PolicyGroupNumber'=>$PolicyGroupNumber, 'PolicyNotes'=>$PolicyNotes, 'PolicyNumber'=>$PolicyNumber]], 'CaseName'=>$CaseName, 'PayerScenario'=>$PayerScenario]
+        // );  'Cases'=>$Cases,
        
         $Practice=array(
             'PracticeID'=>$PracticeID, 'PracticeName'=>$PracticeName
@@ -283,7 +288,7 @@ public function UpdatePatient()
             'RequestHeader' => [
                 'User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey],
             'Patient'=>[
-                'AddressLine1'=>$AddressLine1, 'AddressLine2'=>$AddressLine2, 'Cases'=>$Cases, 'City'=>$City, 'Country'=>$Country, 'DateofBirth'=>$DateofBirth, 'EmailAddress'=>$EmailAddress, 'FirstName'=>$FirstName, 'Gender'=>$Gender, 'HomePhone'=>$HomePhone, 'LastName'=>$LastName, 'MobilePhone'=>$MobilePhone, 'Practice'=>$Practice, 'State'=>$State, 'WorkPhone'=>$WorkPhone, 'ZipCode'=>$ZipCode]
+                'AddressLine1'=>$AddressLine1, 'AddressLine2'=>$AddressLine2,'City'=>$City,  'Country'=>$Country, 'DateofBirth'=>$DateofBirth, 'EmailAddress'=>$EmailAddress, 'FirstName'=>$FirstName, 'Gender'=>$Gender, 'HomePhone'=>$HomePhone, 'LastName'=>$LastName, 'MobilePhone'=>$MobilePhone, 'Practice'=>$Practice, 'State'=>$State, 'WorkPhone'=>$WorkPhone, 'ZipCode'=>$ZipCode, 'PatientID'=>$PatientID]
         );
         // echo json_encode($UpdatePatientReq);
 
@@ -430,7 +435,7 @@ public function UpdateAppointment()
                 
                 $request = array (
                     'RequestHeader' => array('User' => $user, 'Password' => $password, 'CustomerKey' => $customerKey),
-                    'Filter' => array('PracticeName'=>$PracticeName, 'PracticeId'=>$PracticeId,'FromCreatedDate'=>$FromCreatedDate,'FromLastModifiedDate'=>$FromLastModifiedDate, 'ToLastModifiedDate'=>$ToLastModifiedDate),
+                    'Filter' => array('PracticeName'=>$PracticeName, 'PracticeId'=>$PracticeId,'FromLastModifiedDate'=>$FromLastModifiedDate, 'ToLastModifiedDate'=>$ToLastModifiedDate),
                     'Fields'=> array('PatientFullName'=>'true','ConfirmationStatus'=> 'true', 'CreatedDate'=> 'true','ID'=> 'true','PatientID'=> 'true','ResourceName1'=>'true','StartDate'=>'true') 
                 );
                 //'FromLastModifiedDate'=>'02/12/2021', 'ToLastModifiedDate'=>'02/13/2021'
